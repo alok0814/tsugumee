@@ -1,32 +1,80 @@
-# React + TypeScript + Vite
+# つぎミー
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+地方の中小企業と、経営をやりたい若手を、6か月・3段階の修行でつなぐ事業承継の画面モックです。
 
-Currently, two official plugins are available:
+社長が「この人に任せてよいか」を見るための記録が残ることを主題にしています。マッチングの便利さそのものは主題にしていません。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+公開サイト: https://tsugumee.vercel.app
 
-## React Compiler
+ログインのメールとパスワードは見た目だけです。そのまま入れます。右上で「探す」「修行」「社長」を切り替えられます。
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 画面
 
-## Expanding the Oxlint configuration
+### 探す（林 透）
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+会社を探す側の画面です。
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+- 業種、地域、譲渡希望額、売上、利益、借入で絞れます
+- 写真つきの案件カードに、譲渡希望額、月々のローン目安、つぐみへの年率が出ます
+- カードを開くとカルテです。後継の条件、数字、現場の課題、年次の表、段階ごとの働き方と報酬が並びます
+- カルテから「気になる」と「応募する」ができます
+
+### 修行（高橋 葵）
+
+木下工務店で修行中の人の画面です。いまは段階2（社長の右腕）です。
+
+- 日報を書くと、その文章から一文を抜き、気づきと提案の下書きを返します
+- 過去の日報と気づき、出した提案が下に残ります
+- 文面は端末の中で作っています。外部のAIには送っていません
+
+### 社長（木下 誠一）
+
+木下工務店の社長の画面です。
+
+- 気になる: 誰が気になっているか、応募の意向があるか、カルテを見たか。人を開くと、学校でやっていること、意気込み、生き方が出ます。そこからオファーできます
+- 修行中: 段階1、段階2、段階3、終了の列です。カードには名前、大学と学年、いまの段階だけが出ます
+- 見極め: 人を開くと、適性の内訳、その人についての社長の日報、社員の所見、継続判定が出ます
+- 手書きの写真を選ぶと、デモ用の文字が入ります。直してから記録できます。OCRエンジンは入っていません
+- 継続判定は「次の段階へ」「もう1ヶ月」「ここまで」です。段階1から段階2へ進むときだけ、承継を前提にした合意のチェックが要ります
+- 順位は F から S です。高橋葵は A、佐藤蓮は D、山本大輝は F。あらかじめ書いた評価で、その場では計算しません
+
+## 修行の3段階
+
+| 段階 | 期間 | やること | 報酬 |
+| --- | --- | --- | --- |
+| 1 従業員 | 1〜2ヶ月目 | 現場で職人と動く | 時給1,200円 |
+| 2 社長の右腕 | 3〜4ヶ月目 | 見積、営業同行、改善提案 | 時給1,200円 |
+| 3 経営参画 | 5〜6ヶ月目 | リフォーム受注の1部門 | 時給＋担当部門の粗利の5% |
+
+1社あたり同時に見られる候補は3人までです。
+
+## デモの日付と人
+
+画面の「今日」は 2026年9月25日で止まっています。
+
+| モード | 人 | 立場 |
+| --- | --- | --- |
+| 探す | 林 透 | 大阪府立大学 4年。堺市北区 |
+| 修行 | 高橋 葵 | 木下工務店で段階2 |
+| 社長 | 木下 誠一 | 堺の木下工務店 |
+
+ほかに、修行中の佐藤蓮（段階1）と、見送りで終了した山本大輝がいます。案件は木下工務店のほか、パン、機械、弁当、農園、運送があります。
+
+## データの持ち方
+
+サーバーもデータベースもありません。最初のデータは `src/data` にあり、操作した結果はブラウザの `localStorage`（キー `tsugime-mvp-v6`）に残ります。右上のメニュー「最初の状態に戻す」でログイン画面に戻り、保存も消えます。
+
+## 手元で動かす
+
+```sh
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+http://localhost:5173 で開きます。
+
+```sh
+npm run build
+```
+
+型チェックのあと、`dist` に静的ファイルを出します。本番はこの結果を Vercel が https://tsugumee.vercel.app で配信しています。
